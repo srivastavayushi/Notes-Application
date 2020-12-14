@@ -1,25 +1,10 @@
-//const validator = require("validator");
-const chalk = require("chalk");
+const fs = require("fs");
 const yargs = require("yargs");
 
-const getNotes = require("./notes");
-
-//const message = getNotes();
-//console.log(message);
-
-//console.log(validator.isEmail("gmail.com"));
-//console.log(validator.isURL("htps://mead.io"));
-//console.log(chalk.black.bgRed("hey there"));
-//console.log(process.argv[2]);
+const Notes = require("./notes");
 
 //const command = process.argv[2];
 //console.log(process.argv);
-
-// if (command === "add") {
-//   console.log("Adding node");
-// } else {
-//   console.log("Enter the correct command");
-// }
 
 //notes application commands: add, remove, read, list
 
@@ -33,9 +18,14 @@ yargs.command({
       demandOption: true,
       type: "string",
     },
+    body: {
+      describe: "Body of added note",
+      demandOption: true,
+      type: "string",
+    },
   },
   handler: function (argv) {
-    console.log("Adding a new node", argv);
+    Notes.addNote(argv.title, argv.body);
   },
 });
 
@@ -44,8 +34,15 @@ yargs.command({
 yargs.command({
   command: "remove",
   describe: "Remove a note",
-  handler: function () {
-    console.log("Removing a node");
+  builder: {
+    title: {
+      describe: "Removed Note Title",
+      demandOption: true,
+      type: "string",
+    },
+  },
+  handler: function (argv) {
+    Notes.removeNote(argv.title);
   },
 });
 
@@ -70,4 +67,5 @@ yargs.command({
   },
 });
 // Displaying Commands
-console.log(yargs.argv);
+//console.log(yargs.argv);
+yargs.parse();
