@@ -1,0 +1,24 @@
+{
+  "name": "notes-application",
+  "version": "1.0.0",
+  "description": "This application takes notes",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srivastavayushi/Notes-Application.git"
+  },
+  "author": "Ayushi Srivastava",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/srivastavayushi/Notes-Application/issues"
+  },
+  "homepage": "https://github.com/srivastavayushi/Notes-Application#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "validator": "^13.5.2",
+    "yargs": "^16.2.0"
+  }
+}
