@@ -1,19 +1,33 @@
 const fs = require("fs");
 const chalk = require("chalk");
 
-function getNotes() {
-  return "Your notes ...";
-}
-
 /// ADDING NOTES
 
-const addNote = function (title, body) {
+const addNote = (title, body) => {
   const notes = loadNotes();
-  const duplicateNotes = notes.filter(function (note) {
-    return note.title === title;
-  });
+  // FIRST METHOD
+  //const duplicateNotes = notes.filter((note) => note.title === title);
 
-  if (duplicateNotes.length === 0) {
+  // SECOND METHOD
+  const duplicateNote = notes.find((note) => note.title === title);
+
+  //FIRST METHOD
+
+  //   if (duplicateNotes.length === 0) {
+  //     notes.push({
+  //       title: title,
+  //       body: body,
+  //     });
+  //     saveNotes(notes);
+  //     console.log(chalk.yellow.bgBlack.bold("New Note Added"));
+  //   } else {
+  //     console.log("This title is already in use");
+  //   }
+  // };
+
+  // SECOND METHOD (MORE EFFICIENT)
+
+  if (!duplicateNote) {
     notes.push({
       title: title,
       body: body,
@@ -21,16 +35,16 @@ const addNote = function (title, body) {
     saveNotes(notes);
     console.log(chalk.yellow.bgBlack.bold("New Note Added"));
   } else {
-    console.log("This title is already in use");
+    console.log(chalk.yellow.bgBlack.bold("This title is already in use"));
   }
 };
+
 /// REMOVE NOTES
 
-const removeNote = function (title) {
+const removeNote = (title) => {
   const notes = loadNotes();
-  const notesToKeep = notes.filter(function (note) {
-    return note.title !== title;
-  });
+  const notesToKeep = notes.filter((note) => note.title !== title);
+
   if (notes.length > notesToKeep.length) {
     console.log(chalk.white.bgGreen.bold("Note Removed"));
     saveNotes(notesToKeep);
@@ -38,11 +52,47 @@ const removeNote = function (title) {
     return console.log(chalk.white.bgRed.bold("No Note Found"));
   }
 };
-const saveNotes = function (notes) {
+
+///  LIST NOTES
+
+const listNotes = () => {
+  const notes = loadNotes();
+  console.log(chalk.white.bgGreen.bold("YOUR NOTES"));
+  const notesToDisplay = notes.forEach((note) =>
+    console.log("title : " + chalk.white.bgRed(note.title))
+  );
+  console.log(notesToDisplay);
+};
+
+// READ NOTES
+
+const readNote = (title) => {
+  const notes = loadNotes();
+  const searchedNote = notes.find((note) => note.title === title);
+  if (searchedNote) {
+    console.log(
+      "title : " +
+        chalk.white.bgMagenta.bold(searchedNote.title) +
+        " , " +
+        "body : " +
+        chalk.black.bgGreen(searchedNote.body)
+    );
+  } else {
+    console.log(
+      chalk.white.bgMagenta.bold("Note with this title is not found")
+    );
+  }
+};
+// SAVE NOTES
+
+const saveNotes = (notes) => {
   const dataJSON = JSON.stringify(notes);
   fs.writeFileSync("notes.json", dataJSON);
 };
-const loadNotes = function () {
+
+// LOAD NOTES
+
+const loadNotes = () => {
   try {
     const dataBuffer = fs.readFileSync("notes.json");
     const dataJSON = dataBuffer.toString();
@@ -53,7 +103,8 @@ const loadNotes = function () {
 };
 
 module.exports = {
-  getNotes: getNotes,
   addNote: addNote,
   removeNote: removeNote,
+  listNotes: listNotes,
+  readNote: readNote,
 };
